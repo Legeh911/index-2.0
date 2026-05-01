@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="shortcut icon" type="image/jpeg" href="favicon1.jpg">
+  <title>Sign Up — Index 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --chocolate:  #d2691e;
+      --deep-brown: #1a0a00;
+      --amber:      #ff6a00;
+      --amber-light:#ffb347;
+      --white:      #ffffff;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'DM Sans',sans-serif; background:var(--deep-brown); color:var(--white); min-height:100vh; display:flex; align-items:stretch; }
+
+    .auth-left {
+      flex:1; display:flex; flex-direction:column; justify-content:center; padding:4rem 6%;
+      background: linear-gradient(135deg,rgba(26,10,0,0.88),rgba(26,10,0,0.7)), url('s3.jpg') center/cover no-repeat;
+      position:relative; overflow:hidden;
+    }
+    .auth-left::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg,transparent,transparent 60px,rgba(210,105,30,0.04) 60px,rgba(210,105,30,0.04) 61px); }
+    .auth-brand { font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:4rem; position:relative; }
+    .auth-brand span { color:var(--chocolate); }
+    .auth-tagline { position:relative; }
+    .auth-tagline .label { font-size:0.7rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--chocolate); display:flex; align-items:center; gap:0.75rem; margin-bottom:1.2rem; }
+    .auth-tagline .label::before { content:''; display:inline-block; width:28px; height:1px; background:var(--chocolate); }
+    .auth-tagline h2 { font-family:'Playfair Display',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:400; line-height:1.15; margin-bottom:1.5rem; }
+    .auth-tagline h2 em { font-style:italic; color:var(--amber-light); }
+    .auth-tagline p { font-size:0.9rem; line-height:1.8; color:rgba(255,255,255,0.5); max-width:340px; }
+
+    .auth-right { width:520px; min-height:100vh; background:#0e0600; display:flex; flex-direction:column; justify-content:center; padding:3rem; border-left:1px solid rgba(210,105,30,0.12); position:relative; overflow-y:auto; }
+    .auth-right::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--chocolate),transparent); }
+
+    .back-home { display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:2rem; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.3); text-decoration:none; transition:color 0.2s; }
+    .back-home:hover { color:var(--white); }
+    .back-home svg { width:14px; height:14px; }
+
+    .form-title { font-family:'Playfair Display',serif; font-size:1.9rem; font-weight:700; margin-bottom:0.4rem; }
+    .form-subtitle { font-size:0.83rem; color:rgba(255,255,255,0.4); margin-bottom:2rem; }
+    .form-subtitle a { color:var(--chocolate); text-decoration:none; }
+
+    .alert { border-radius:6px; padding:0.85rem 1rem; font-size:0.82rem; margin-bottom:1.2rem; display:none; }
+    .alert.error   { background:rgba(220,50,50,0.12); border:1px solid rgba(220,50,50,0.3); color:#ff8a8a; }
+    .alert.success { background:rgba(60,180,60,0.1);  border:1px solid rgba(60,180,60,0.3);  color:#7dda7d; }
+    .alert.show { display:block; }
+
+    .field { margin-bottom:1.2rem; }
+    .field label { display:block; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:0.5rem; }
+    .field input { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(210,105,30,0.2); border-radius:6px; padding:0.82rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.92rem; color:var(--white); outline:none; transition:border-color 0.25s,background 0.25s; }
+    .field input::placeholder { color:rgba(255,255,255,0.2); }
+    .field input:focus { border-color:var(--chocolate); background:rgba(210,105,30,0.06); }
+    .field .hint { font-size:0.72rem; color:rgba(255,255,255,0.25); margin-top:0.35rem; }
+
+    .strength-bar  { height:3px; border-radius:2px; background:rgba(255,255,255,0.08); margin-top:0.5rem; overflow:hidden; }
+    .strength-fill { height:100%; width:0%; transition:width 0.3s,background 0.3s; }
+
+    .terms { display:flex; align-items:flex-start; gap:0.6rem; font-size:0.8rem; color:rgba(255,255,255,0.4); margin-bottom:1.6rem; line-height:1.5; }
+    .terms input[type=checkbox] { accent-color:var(--chocolate); width:14px; height:14px; flex-shrink:0; margin-top:2px; }
+    .terms a { color:var(--chocolate); text-decoration:none; }
+
+    .btn-primary { width:100%; background:var(--chocolate); color:var(--white); border:none; border-radius:6px; padding:0.95rem; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:background 0.25s,transform 0.2s; }
+    .btn-primary:hover { background:var(--amber); }
+    .btn-primary:active { transform:scale(0.98); }
+    .btn-primary:disabled { opacity:0.5; cursor:not-allowed; }
+
+    @media (max-width:900px) { .auth-left { display:none; } .auth-right { width:100%; padding:2.5rem 1.5rem; } }
+  </style>
+</head>
+<body>
+
+<div class="auth-left">
+  <div class="auth-brand">Index <span>2.0</span></div>
+  <div class="auth-tagline">
+    <div class="label">Join Us</div>
+    <h2>Start Your<br><em>Creative Journey</em></h2>
+    <p>Create your Index 2.0 account to book sessions, track your projects, and collaborate with our creative team in Accra and beyond.</p>
+  </div>
+</div>
+
+<div class="auth-right">
+  <a href="index.php" class="back-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Home
+  </a>
+
+  <h1 class="form-title">Create Account</h1>
+  <p class="form-subtitle">Already have an account? <a href="login.html">Sign in</a></p>
+
+  <div class="alert error"   id="errorBox"></div>
+  <div class="alert success" id="successBox"></div>
+
+  <div class="field">
+    <label>Username</label>
+    <input type="text" id="usernameInput" placeholder="e.g. kwame_design" autocomplete="username"/>
+    <div class="hint">Min. 3 characters.</div>
+  </div>
+  <div class="field">
+    <label>Email Address</label>
+    <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email"/>
+  </div>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" id="passwordInput" placeholder="Create a strong password" autocomplete="new-password" oninput="checkStrength(this.value)"/>
+    <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+    <div class="hint" id="strengthLabel">Min. 6 characters</div>
+  </div>
+  <div class="field">
+    <label>Confirm Password</label>
+    <input type="password" id="confirmInput" placeholder="Repeat your password" autocomplete="new-password"/>
+  </div>
+
+  <label class="terms">
+    <input type="checkbox" id="termsCheck"/>
+    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+  </label>
+
+  <button class="btn-primary" id="signupBtn" onclick="handleSignup()">Create Account</button>
+</div>
+
+<script>
+  function checkStrength(val) {
+    const fill = document.getElementById('strengthFill');
+    const label = document.getElementById('strengthLabel');
+    let score = 0;
+    if (val.length >= 6)  score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [
+      { w:'0%',   c:'transparent', t:'Min. 6 characters' },
+      { w:'25%',  c:'#e05050',     t:'Weak' },
+      { w:'50%',  c:'#e08030',     t:'Fair' },
+      { w:'75%',  c:'#d2a030',     t:'Good' },
+      { w:'100%', c:'#5ab85a',     t:'Strong' },
+    ];
+    const lv = levels[Math.min(score, 4)];
+    fill.style.width = lv.w;
+    fill.style.background = lv.c;
+    label.textContent = lv.t;
+  }
+
+  function showError(msg) {
+    const eb = document.getElementById('errorBox');
+    eb.textContent = msg; eb.className = 'alert error show';
+    document.getElementById('successBox').className = 'alert success';
+  }
+  function showSuccess(msg) {
+    const sb = document.getElementById('successBox');
+    sb.textContent = msg; sb.className = 'alert success show';
+    document.getElementById('errorBox').className = 'alert error';
+  }
+
+  async function handleSignup() {
+    const btn      = document.getElementById('signupBtn');
+    const username = document.getElementById('usernameInput').value.trim();
+    const email    = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('passwordInput').value;
+    const confirm  = document.getElementById('confirmInput').value;
+    const terms    = document.getElementById('termsCheck').checked;
+
+    if (!username || !email || !password) return showError('Please fill in all fields.');
+    if (username.length < 3)  return showError('Username must be at least 3 characters.');
+    if (password.length < 6)  return showError('Password must be at least 6 characters.');
+    if (password !== confirm)  return showError('Passwords do not match.');
+    if (!terms)                return showError('Please accept the terms to continue.');
+
+    btn.disabled = true;
+    btn.textContent = 'Creating account…';
+
+    try {
+      const form = new FormData();
+      form.append('username', username);
+      form.append('email', email);
+      form.append('password', password);
+
+      const res  = await fetch('account.php', { method: 'POST', body: form });
+      const text = (await res.text()).trim();
+
+      if (text === 'OK') {
+        showSuccess('Account created! Redirecting…');
+        setTimeout(() => window.location.href = 'index.php', 1000);
+      } else {
+        showError(text || 'Something went wrong. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+      }
+    } catch (err) {
+      showError('Could not reach server. Check your connection and try again.');
+      console.error(err);
+      btn.disabled = false;
+      btn.textContent = 'Create Account';
+    }
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') handleSignup(); });
+</script>
+</body>
+</html>

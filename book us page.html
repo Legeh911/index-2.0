@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" type="image/jpeg" href="favicon1.jpg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Barlow:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0d0b08;
+    --dark: #1a1610;
+    --orange: #e8640a;
+    --orange-light: #f07820;
+    --cream: #f5ede0;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --muted: #8a7f72;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(13,11,8,0.95);
+    backdrop-filter: blur(12px);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    border-bottom: 1px solid rgba(232,100,10,0.15);
+  }
+
+  .logo { font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.05em; }
+  .logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a.active { color: var(--white); font-weight: 600; }
+  .nav-btn { background: var(--orange); color: var(--white); border: none; padding: 10px 24px; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; border-radius: 50px; }
+
+  /* HERO SECTION */
+  .hero {
+    padding-top: 64px;
+    min-height: 38vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0d0b08 0%, #1a1108 50%, #0d0b08 100%);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -10%;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,100,10,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 64px 48px;
+    text-align: center;
+    position: relative;
+  }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--orange);
+  }
+
+  .hero-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 1rem;
+    font-weight: 300;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* MAIN LAYOUT */
+  .page-body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 72px 48px 96px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 80px;
+    align-items: start;
+  }
+
+  /* LEFT: FORM */
+  .form-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .form-section > p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+  }
+
+  input, select, textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    padding: 14px 18px;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+    width: 100%;
+    appearance: none;
+  }
+
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--orange);
+    background: rgba(232,100,10,0.06);
+  }
+
+  textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+
+  select option { background: #1a1610; color: var(--white); }
+
+  /* SERVICE TAGS */
+  .service-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+
+  .tag {
+    padding: 8px 18px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.12);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    letter-spacing: 0.04em;
+  }
+
+  .tag:hover { border-color: var(--orange); color: var(--orange); }
+  .tag.selected { background: var(--orange); border-color: var(--orange); color: var(--white); }
+
+  /* DATE ROW */
+  .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  /* SUBMIT BTN */
+  .submit-btn {
+    margin-top: 32px;
+    width: 100%;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 18px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-btn:hover { background: var(--orange-light); transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+
+  .submit-btn.sent { background: #2a8a4a; }
+
+  /* RIGHT: SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 28px; }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .info-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .info-item:last-child { margin-bottom: 0; }
+
+  .info-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(232,100,10,0.12);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1rem;
+  }
+
+  .info-text strong {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 2px;
+  }
+
+  .info-text span {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* PACKAGES */
+  .pkg {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pkg:last-child { border-bottom: none; padding-bottom: 0; }
+  .pkg:first-child { padding-top: 0; }
+
+  .pkg-name { font-size: 0.88rem; font-weight: 500; }
+  .pkg-desc { font-size: 0.76rem; color: var(--muted); font-weight: 300; margin-top: 2px; }
+  .pkg-price { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--orange); white-space: nowrap; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    margin: 8px 0;
+  }
+
+  /* SUCCESS overlay */
+  .success-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(248, 247, 246, 0.92);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+  }
+
+  .success-overlay.show { display: flex; }
+
+  .success-box {
+    background: var(--dark);
+    border: 1px solid rgba(232,100,10,0.3);
+    border-radius: 16px;
+    padding: 56px 48px;
+    max-width: 480px;
+    animation: fadeUp 0.4s ease;
+  }
+
+  .check-icon {
+    width: 72px; height: 72px;
+    background: rgba(232,100,10,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 2rem;
+  }
+
+  .success-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .success-box p { color: var(--muted); font-size: 0.95rem; font-weight: 300; line-height: 1.7; }
+
+  .close-btn {
+    margin-top: 32px;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ANIMATE IN */
+  .fade-in { animation: fadeUp 0.6s ease both; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+
+  @media (max-width: 860px) {
+    .page-body { grid-template-columns: 1fr; gap: 48px; padding: 48px 24px 72px; }
+    .hero-inner { padding: 48px 24px; }
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .form-grid { grid-template-columns: 1fr; }
+    .date-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Index <span>2.0</span></div>
+  <ul class="nav-links">
+    <li><a href="index.php">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html">Services</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-btn">Book Us</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner fade-in">
+    <p class="eyebrow">Photography & Visuals</p>
+    <h1>Let's Frame Your<br><em>Story Together</em></h1>
+    <p class="hero-sub">Tell us about your project and we'll craft imagery that captures the true essence of your brand.</p>
+  </div>
+</section>
+
+<!-- BODY -->
+<div class="page-body">
+
+  <!-- FORM -->
+  <div class="form-section fade-in delay-1">
+    <h2>Book a Session</h2>
+    <p>Fill out the form below and our team will get back to you within 24 hours to confirm your booking.</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" placeholder="Alex ">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" placeholder="Sackey">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="alexsackey@company.com">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+233 055743856">
+      </div>
+      <div class="form-group">
+        <label>Company / Brand</label>
+        <input type="text" placeholder="Your brand name">
+      </div>
+      <div class="form-group">
+        <label>Budget Range</label>
+        <select>
+          <option value="" disabled selected>Select a range</option>
+          <option>Under GH1,000</option>
+          <option>GH1,000 – GH,000</option>
+          <option>Gh3,000 – GH7,500</option>
+          <option>GH7,500 – Gh15,000</option>
+          <option>GH15,000+</option>
+        </select>
+      </div>
+
+      <div class="form-group full">
+        <label>Service Required</label>
+        <div class="service-tags">
+          <div class="tag" onclick="toggleTag(this)">Editorial Photography</div>
+          <div class="tag" onclick="toggleTag(this)">Commercial Shoots</div>
+          <div class="tag" onclick="toggleTag(this)">Brand Identity Visuals</div>
+          <div class="tag" onclick="toggleTag(this)">Product Photography</div>
+          <div class="tag" onclick="toggleTag(this)">Interior & Space</div>
+          <div class="tag" onclick="toggleTag(this)">Video & Motion</div>
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <label>Preferred Dates</label>
+        <div class="date-row">
+          <input type="date">
+          <input type="date">
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <label>Project Brief</label>
+        <textarea placeholder="Tell us about your project — vision, mood, references, location ideas..."></textarea>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="handleSubmit(this)">
+      Send Booking Request →
+    </button>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar fade-in delay-2">
+
+    <div class="info-card">
+      <h3>Contact & Studio</h3>
+      <div class="info-item">
+        <div class="info-icon">📍</div>
+        <div class="info-text">
+          <strong>Studio Location</strong>
+          <span>Octan Accra</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">📞</div>
+        <div class="info-text">
+          <strong>Phone</strong>
+          <span>+233 557438156</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">✉️</div>
+        <div class="info-text">
+          <strong>Email</strong>
+          <span>hello@index2studio.com</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🕐</div>
+        <div class="info-text">
+          <strong>Working Hours</strong>
+          <span>Mon – Sat, 8:00 AM – 7:00 PM</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>Our Packages</h3>
+      <div class="pkg">
+        <div>
+          <div class="pkg-name">Essential</div>
+          <div class="pkg-desc">Half-day shoot · 30 edited images</div>
+        </div>
+        <div class="pkg-price">GH850</div>
+      </div>
+      <div class="pkg">
+        <div>
+          <div class="pkg-name">Professional</div>
+          <div class="pkg-desc">Full-day shoot · 80 edited images</div>
+        </div>
+        <div class="pkg-price">GH2,200</div>
+      </div>
+      <div class="pkg">
+        <div>
+          <div class="pkg-name">Brand Suite</div>
+          <div class="pkg-desc">2-day campaign · unlimited selects</div>
+        </div>
+        <div class="pkg-price">GH5,800</div>
+      </div>
+      <hr class="divider">
+      <p style="font-size:0.76rem; color:var(--muted); font-weight:300; line-height:1.6;">Custom scopes available. All packages include art direction, styling consultation, and full commercial usage rights.</p>
+    </div>
+
+    <div class="info-card" style="background: linear-gradient(135deg, rgba(232,100,10,0.12), rgba(232,100,10,0.04)); border-color: rgba(232,100,10,0.25);">
+      <p style="font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--orange); margin-bottom:10px; font-weight:600;">Quick Turnaround</p>
+      <p style="font-size:0.88rem; font-weight:300; color:rgba(255,255,255,0.75); line-height:1.6;">Need something fast? We offer priority booking for urgent campaigns. Reach us directly at <strong style="color:var(--white);">+233 557438156</strong>.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="check-icon">✓</div>
+    <h2>Request Received!</h2>
+    <p>Thank you for reaching out. Our team will review your brief and contact you within <strong style="color:var(--orange)">24 hours</strong> to confirm your booking details.</p>
+    <button class="close-btn" onclick="closeOverlay()">Back to Site</button>
+  </div>
+</div>
+
+<script>
+  function toggleTag(el) {
+    el.classList.toggle('selected');
+  }
+
+  function handleSubmit(btn) {
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('successOverlay').classList.add('show');
+      btn.textContent = 'Send Booking Request →';
+      btn.disabled = false;
+    }, 1200);
+  }
+
+  function closeOverlay() {
+    document.getElementById('successOverlay').classList.remove('show');
+  }
+</script>
+</body>
+</html>

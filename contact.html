@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <title>CONTACT US PAGE</title>
+ <link rel="stylesheet" href="style2.css">
+ <link rel="shortcut icon" type="image/jpeg" href="favicon1.jpg">
+ <style>
+   /* Add this to match your navigation header style */
+   #user-greeting-item {
+     border-left: 1px solid rgba(210,105,30,0.3);
+     padding-left: 1rem;
+     margin-left: 1rem;
+   }
+   #user-greeting {
+     color: #ffb347; /* --amber-light */
+     font-size: 0.75rem;
+     letter-spacing: 0.1em;
+     text-transform: uppercase;
+     font-weight: 600;
+   }
+ </style>
+</head>
+<body>
+  <nav>
+  <div class="nav-logo">Index <span>2.0</span></div>
+  <ul class="nav-links">
+    <li><a href="index.php">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li>
+        <div class="dropdown">
+          <div class="dropbtn">SERVICES</div>
+          <div class="dropdown-content">
+              <a href="videography.html">Videography</a>
+              <a href="photography.html">Photography</a>
+              <a href="web-design.html">Web Design</a>
+              <a href="contentcreation.html">Content Creation</a>
+           </div>
+        </div>
+    </li>
+    <li><a href="contact.html">Contact</a></li>
+    <li id="user-greeting-item" style="display:none;">
+      <span id="user-greeting"></span>
+    </li>
+  </ul>
+</nav>
+    
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Contact us page with form and contact details</h2>
+
+<div class="hero">
+  <span class="hero-badge">Get in touch</span>
+  <h1>Contact US</h1>
+  <p>Have a question or want to work together? We'd love to hear from you.</p>
+</div>
+
+<svg class="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="background:#0c2340; height:60px;">
+  <path d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z" fill="#f5f6f8"/>
+</svg>
+
+<div class="body">
+  <div class="cards-wrap">
+
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot"></span> Send your request</div>
+
+      <div id="form-area">
+        <form action="https://api.web3forms.com/submit" method="POST" id="contact-form">
+          <input type="hidden" name="access_key" value="54791772-d30c-4ac1-a87c-47e5761f625c">
+
+          <div class="field">
+            <label>Name</label>
+            <input type="text" name="name" id="form-name" placeholder="Alex Sackey" required>
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input type="email" name="email" id="form-email" placeholder="alex@example.com" required>
+          </div>
+
+          <div class="field">
+            <label>Subject</label>
+            <input type="text" name="title" placeholder="Subject of message">
+          </div>
+
+          <div class="field">
+            <label>Message</label>
+            <textarea name="message" rows="5" placeholder="Your message..." required></textarea>
+          </div>
+
+          <button type="submit" class="send-btn">Send message</button>
+        </form>
+      </div>
+
+      <div class="success-msg" id="success-msg">
+        <div class="success-check">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h4>Message sent!</h4>
+        <p>We'll get back to you as soon as possible.</p>
+      </div>
+    </div>
+
+    <div class="card reach-card">
+      <div class="card-title"><span class="card-title-dot" style="background:#0F6E56;"></span> Reach us</div>
+      <div class="reach-item">
+        <div class="reach-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></div>
+        <div><div class="reach-label">Email</div><div class="reach-value">index2.0@gmail.com</div></div>
+      </div>
+      <div class="reach-item">
+        <div class="reach-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.1 2.18 2 2 0 012.06 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+        <div><div class="reach-label">Phone</div><div class="reach-value">+233 557 438 156</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── USER PROFILE & FORM LOGIC ──
+  function initUser() {
+    const name = localStorage.getItem('userName');
+    const email = localStorage.getItem('userEmail'); // Assuming you store email too
+
+    // Update Nav
+    const displayEl = document.getElementById('user-greeting');
+    const containerEl = document.getElementById('user-greeting-item');
+    if (name && displayEl && containerEl) {
+      displayEl.textContent = 'Hi, ' + name;
+      containerEl.style.display = 'block';
+    }
+
+    // Auto-fill Form
+    if (name) document.getElementById('form-name').value = name;
+    if (email) document.getElementById('form-email').value = email;
+  }
+
+  // ── CONTACT FORM SUBMISSION ──
+  const form = document.getElementById('contact-form');
+  const formArea = document.getElementById('form-area');
+  const successMsg = document.getElementById('success-msg');
+  const btn = form.querySelector('.send-btn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) });
+      const json = await res.json();
+      if (json.success) {
+        formArea.style.display = 'none';
+        successMsg.style.display = 'block';
+      } else {
+        btn.textContent = 'Send message';
+        btn.disabled = false;
+        alert('Something went wrong. Please try again.');
+      }
+    } catch {
+      btn.textContent = 'Send message';
+      btn.disabled = false;
+      alert('Network error. Please try again.');
+    }
+  });
+
+  // Init on load
+  window.addEventListener('DOMContentLoaded', initUser);
+</script>
+
+<footer>
+    </footer>
+</body>
+</html>

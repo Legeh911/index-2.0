@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="shortcut icon" type="image/jpeg" href="favicon1.jpg">
+  <title>Login — Index 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --chocolate:#d2691e; --deep-brown:#1a0a00; --amber:#ff6a00;
+      --amber-light:#ffb347; --text-muted:#a06030; --white:#ffffff;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'DM Sans',sans-serif; background:var(--deep-brown); color:var(--white); min-height:100vh; display:flex; align-items:stretch; overflow-x:hidden; }
+
+    .auth-left { flex:1; display:flex; flex-direction:column; justify-content:center; padding:4rem 6%; background:linear-gradient(135deg,rgba(26,10,0,0.92) 0%,rgba(26,10,0,0.75) 100%),url('s2.jpg') center/cover no-repeat; position:relative; overflow:hidden; }
+    .auth-left::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 60px,rgba(210,105,30,0.04) 60px,rgba(210,105,30,0.04) 61px); pointer-events:none; }
+    .auth-brand { font-family:'Playfair Display',serif; font-size:2rem; color:var(--white); margin-bottom:4rem; position:relative; }
+    .auth-brand span { color:var(--chocolate); }
+    .auth-tagline { position:relative; }
+    .auth-tagline .label { font-size:0.7rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--chocolate); display:flex; align-items:center; gap:0.75rem; margin-bottom:1.2rem; }
+    .auth-tagline .label::before { content:''; display:inline-block; width:28px; height:1px; background:var(--chocolate); }
+    .auth-tagline h2 { font-family:'Playfair Display',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:400; line-height:1.15; color:var(--white); margin-bottom:1.5rem; }
+    .auth-tagline h2 em { font-style:italic; color:var(--amber-light); }
+    .auth-tagline p { font-size:0.9rem; line-height:1.8; color:rgba(255,255,255,0.5); max-width:340px; }
+
+    .auth-right { width:480px; min-height:100vh; background:#0e0600; display:flex; flex-direction:column; justify-content:center; padding:3.5rem 3rem; border-left:1px solid rgba(210,105,30,0.12); position:relative; }
+    .auth-right::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--chocolate),transparent); }
+
+    .form-title { font-family:'Playfair Display',serif; font-size:1.9rem; font-weight:700; color:var(--white); margin-bottom:0.4rem; }
+    .form-subtitle { font-size:0.83rem; color:rgba(255,255,255,0.4); margin-bottom:2.4rem; }
+    .form-subtitle a { color:var(--chocolate); text-decoration:none; }
+    .form-subtitle a:hover { color:var(--amber-light); }
+
+    .field { margin-bottom:1.4rem; }
+    .field label { display:block; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:0.55rem; }
+    .field input { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(210,105,30,0.2); border-radius:6px; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.92rem; color:var(--white); outline:none; transition:border-color 0.25s,background 0.25s; }
+    .field input::placeholder { color:rgba(255,255,255,0.2); }
+    .field input:focus { border-color:var(--chocolate); background:rgba(210,105,30,0.06); }
+
+    .field-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.6rem; }
+    .remember { display:flex; align-items:center; gap:0.5rem; font-size:0.8rem; color:rgba(255,255,255,0.4); cursor:pointer; }
+    .remember input[type=checkbox] { accent-color:var(--chocolate); width:14px; height:14px; }
+    .forgot-link { font-size:0.8rem; color:var(--text-muted); text-decoration:none; transition:color 0.2s; }
+    .forgot-link:hover { color:var(--amber-light); }
+
+    .btn-primary { width:100%; background:var(--chocolate); color:var(--white); border:none; border-radius:6px; padding:0.95rem; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:background 0.25s,transform 0.2s; }
+    .btn-primary:hover { background:var(--amber); }
+    .btn-primary:active { transform:scale(0.98); }
+    .btn-primary:disabled { opacity:0.5; cursor:not-allowed; }
+
+    .alert { border-radius:6px; padding:0.85rem 1rem; font-size:0.82rem; margin-bottom:1.4rem; display:none; }
+    .alert.error   { background:rgba(220,50,50,0.12); border:1px solid rgba(220,50,50,0.3); color:#ff8a8a; }
+    .alert.success { background:rgba(60,180,60,0.1);  border:1px solid rgba(60,180,60,0.3);  color:#7dda7d; }
+    .alert.show { display:block; }
+
+    .divider { display:flex; align-items:center; gap:1rem; margin:1.6rem 0; color:rgba(255,255,255,0.18); font-size:0.75rem; }
+    .divider::before, .divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.08); }
+
+    .back-home { display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:2.5rem; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.3); text-decoration:none; transition:color 0.2s; }
+    .back-home svg { width:14px; height:14px; }
+
+    @media (max-width:900px) { .auth-left { display:none; } .auth-right { width:100%; padding:3rem 1.5rem; } }
+  </style>
+</head>
+<body>
+
+<div class="auth-left">
+  <div class="auth-brand">Index <span>2.0</span></div>
+  <div class="auth-tagline">
+    <div class="label">Welcome Back</div>
+    <h2>Stories Worth<br><em>Telling Again</em></h2>
+    <p>Log back into your Index 2.0 account to manage your bookings, track projects, and stay connected with our creative team.</p>
+  </div>
+</div>
+
+<div class="auth-right">
+  <a href="index.php" class="back-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Home
+  </a>
+
+  <h1 class="form-title">Sign In</h1>
+  <p class="form-subtitle">Don't have an account? <a href="signup.html">Create one</a></p>
+
+  <div class="alert error"   id="errorBox"></div>
+  <div class="alert success" id="successBox"></div>
+
+  <div class="field">
+    <label>Email or Username</label>
+    <input type="text" id="emailInput" placeholder="you@example.com" autocomplete="username"/>
+  </div>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password"/>
+  </div>
+
+  <div class="field-row">
+    <label class="remember"><input type="checkbox" id="rememberCheck"/> Remember me</label>
+    <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+  </div>
+
+  <button class="btn-primary" id="loginBtn" type="button" onclick="handleLogin()">Sign In</button>
+
+  <div class="divider">or</div>
+  <p style="text-align:center; font-size:0.82rem; color:rgba(255,255,255,0.3);">
+    New here? <a href="signup.html" style="color:var(--chocolate);text-decoration:none;">Create your account →</a>
+  </p>
+</div>
+
+<script>
+  // Helper to show error messages
+  function showError(msg) {
+    const errorBox = document.getElementById('errorBox');
+    errorBox.textContent = msg;
+    errorBox.classList.add('show');
+    document.getElementById('successBox').classList.remove('show');
+  }
+
+  // Helper to show success messages
+  function showSuccess(msg) {
+    const successBox = document.getElementById('successBox');
+    successBox.textContent = msg;
+    successBox.classList.add('show');
+    document.getElementById('errorBox').classList.remove('show');
+  }
+
+  async function handleLogin() {
+    const btn  = document.getElementById('loginBtn');
+    const id   = document.getElementById('emailInput').value.trim();
+    const pass = document.getElementById('passwordInput').value;
+
+    // Reset alert visibility
+    document.getElementById('errorBox').classList.remove('show');
+    document.getElementById('successBox').classList.remove('show');
+
+    if (!id || !pass) {
+      showError('Please fill in all fields.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+
+    try {
+      const form = new FormData();
+      form.append('user', id);
+      form.append('pass', pass);
+
+      const res  = await fetch('signin.php', { method: 'POST', body: form });
+      const text = (await res.text()).trim();
+
+      if (text.startsWith('OK:')) {
+        const username = text.split(':')[1];
+        
+        // SAVE NAME for "Hi, [Name]" greeting on Home/About/Contact
+        localStorage.setItem('userName', username);
+        
+        // Save full object if needed for other scripts
+        localStorage.setItem('index2_user', JSON.stringify({
+            username: username,
+            loginAt: new Date().toISOString()
+        }));
+        
+        showSuccess('Login successful! Redirecting…');
+        setTimeout(() => window.location.href = 'index.php', 800);
+      } else {
+        showError(text || 'Login failed. Please check your credentials.');
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    } catch (err) {
+      showError('Connection error. Is signin.php available?');
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
+    }
+  }
+
+  // Allow signing in by pressing the Enter key
+  document.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleLogin();
+  });
+</script>
+</body>
+</html>
